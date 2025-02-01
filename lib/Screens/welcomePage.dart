@@ -1,0 +1,105 @@
+import 'package:fire_com/Colors/ColorsLocal.dart';
+import 'package:flutter/material.dart';
+
+import '../Widget/homeAds.dart';
+import '../Widget/topCategory.dart';
+
+class WelcomePage extends StatefulWidget {
+  Function openDrawer;
+  WelcomePage(this.openDrawer, {super.key});
+
+  @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: RefreshIndicator(
+        onRefresh: () async {},
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10)),
+                      onTap: () => {
+                        widget.openDrawer()
+                      },
+                      child: Container(
+                          height: 45,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black12, blurRadius: 20),
+                              ],
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(10),
+                                  bottomRight: Radius.circular(10))),
+                          child: Icon(Icons.menu)),
+                    ),
+                    Container(
+                        height: 45,
+                        width: 250,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(color: Colors.black12, blurRadius: 20),
+                            ],
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(10),
+                                topLeft: Radius.circular(10))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                          child: Text(
+                            "Welcome to FireStore\nSandun",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: text2,
+                            ),
+                          ),
+                        )),
+                    // Container(
+                    //     height: 45,
+                    //     width: 150,
+                    //     decoration: BoxDecoration(
+                    //         color: Colors.white,
+                    //         boxShadow: [
+                    //           BoxShadow(color: Colors.black12, blurRadius: 20),
+                    //         ],
+                    //         borderRadius: BorderRadius.only(
+                    //             bottomLeft: Radius.circular(10),
+                    //             topLeft: Radius.circular(10))),
+                    //     child: Center(
+                    //         child: Text(
+                    //       "FIRE STORE",
+                    //       style: TextStyle(
+                    //           fontWeight: FontWeight.bold,
+                    //           color: text2,
+                    //           fontSize: 20),
+                    //     ))),
+                  ],
+                ),
+              ),
+              HomeAds(),
+              TopCategory()
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

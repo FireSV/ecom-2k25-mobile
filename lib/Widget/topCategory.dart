@@ -1,6 +1,7 @@
 import 'package:fire_com/Colors/ColorsLocal.dart';
 import 'package:fire_com/Model/top_category_model.dart';
 import 'package:fire_com/Model/top_service_model.dart';
+import 'package:fire_com/Screens/cartView.dart';
 import 'package:fire_com/Widget/loading.dart';
 import 'package:fire_com/Widget/topCategoryWidget.dart';
 import 'package:flutter/material.dart';
@@ -206,26 +207,35 @@ class _TopCategoryState extends State<TopCategory> {
                             color: Colors.white,
                             child: Column(children: [
                               Flexible(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            blurRadius: 10,
-                                            color:
-                                                Colors.black.withOpacity(0.3))
-                                      ]),
-                                  child: Column(
-                                    children: [
-                                      ClipRRect(
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => CartView(service[index])));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(20.0),
-                                        child: Image.asset(
-                                          service[index].image,
-                                          fit: BoxFit.cover,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              blurRadius: 10,
+                                              color:
+                                                  Colors.black.withOpacity(0.3))
+                                        ]),
+                                    child: Column(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                          child: Image.asset(
+                                            service[index].image,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

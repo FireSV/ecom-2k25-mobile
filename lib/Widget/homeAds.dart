@@ -52,10 +52,10 @@ class _HomeAdsState extends State<HomeAds> {
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black12, blurRadius: 20,spreadRadius: 10),
+                    color: Colors.black12, blurRadius: 10,spreadRadius: 10),
               ],
             ),
-            height: 250,
+            height: 120,
             alignment: Alignment.topCenter,
             child: PageView.builder(
               controller: controller,

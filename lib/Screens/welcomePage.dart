@@ -20,36 +20,35 @@ class _WelcomePageState extends State<WelcomePage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
+      color: headerNavigation,
       child: RefreshIndicator(
         onRefresh: () async {},
         child: SingleChildScrollView(
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10,left: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(10),
-                          bottomRight: Radius.circular(10)),
+                      borderRadius: BorderRadius.circular(
+                         1000),
                       onTap: () => {
                         widget.openDrawer()
                       },
                       child: Container(
                           height: 45,
-                          width: 50,
+                          width: 45,
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: navigationIcon,
                               boxShadow: [
                                 BoxShadow(
-                                    color: Colors.black12, blurRadius: 20),
+                                    color: Colors.black12, blurRadius: 20,),
                               ],
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10))),
-                          child: Icon(Icons.menu)),
+                            borderRadius: BorderRadius.circular(
+                                1000),),
+                          child: Icon(Icons.menu,size: 18,)),
                     ),
                     Container(
                         height: 45,

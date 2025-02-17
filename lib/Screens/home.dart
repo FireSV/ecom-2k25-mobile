@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
-      drawer: drawerWidget(),
+      drawer: drawerWidget(context),
       body: SafeArea(
         child: content[_selectedIndex],
       ),

@@ -17,18 +17,27 @@ class _TopCategoryWidgetState extends State<TopCategoryWidget> {
       child: Column(
         children: [
           Padding(
-            padding:  EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(360),
-                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.5),blurRadius: 3,spreadRadius: 1)]
-              ),
-              width: 50,height: 50,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        blurRadius: 3,
+                        spreadRadius: 1)
+                  ]),
+              width: 50,
+              height: 50,
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(1000),
-                  child: Image.asset(widget.image)),),
+                  child: Image.asset(widget.image)),
+            ),
           ),
-          Text(widget.name,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12),)
+          Text(
+            widget.name,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+          ),
         ],
       ),
     );

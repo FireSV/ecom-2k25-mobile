@@ -44,29 +44,66 @@ class _CartViewState extends State<CartView> {
             ),
             Positioned(
               bottom: 30,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: (MediaQuery.of(context).size.height / 2) + 30,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20))),
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: (MediaQuery.of(context).size.height / 2) + 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20))),
+                      child: Column(
                         children: [
-                          Text(
-                            widget.service.name,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
+                          SizedBox(
+                            height: 10,
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.service.name,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              decoration: BoxDecoration(
+                                  color: grey.withOpacity(0.6),
+                                  borderRadius: BorderRadius.circular(10)),
+                              height: 45,
+                              width: MediaQuery.of(context).size.width,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10, right: 10),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Price :",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      " ${widget.service.price}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),

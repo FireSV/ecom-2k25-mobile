@@ -1,5 +1,6 @@
 import 'package:fire_com/Colors/ColorsLocal.dart';
 import 'package:fire_com/Screens/home.dart';
+import 'package:fire_com/Screens/login.dart';
 import 'package:flutter/material.dart';
 
 class Splash extends StatefulWidget {
@@ -13,7 +14,7 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     });
     super.initState();
   }

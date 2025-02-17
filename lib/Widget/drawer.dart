@@ -1,7 +1,9 @@
 import 'package:fire_com/Colors/ColorsLocal.dart';
+import 'package:fire_com/Screens/login.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-Widget drawerWidget() {
+Widget drawerWidget(BuildContext context) {
   return Drawer(
       child: ListView(
     padding: EdgeInsets.zero,
@@ -43,8 +45,14 @@ Widget drawerWidget() {
       ListTile(
         leading: Icon(Icons.logout),
         title: Text('Logout'),
-        onTap: () {
-          // Handle Logout tap
+        onTap: () async {
+          SharedPreferences _prefs = await SharedPreferences.getInstance();
+          _prefs.clear();
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => Login()),
+                (route) => false, // Removes all previous routes
+          );
         },
       ),
     ],

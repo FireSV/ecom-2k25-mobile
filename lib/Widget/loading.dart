@@ -11,12 +11,16 @@ class Loading extends StatefulWidget {
 class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: CircularProgressIndicator(
-        color: loading,
+    return Scaffold(
+      body: Container(
+        color: Colors.white,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Center(
+          child: CircularProgressIndicator(
+            color: navigationIcon,
+          ),
+        ),
       ),
     );
   }

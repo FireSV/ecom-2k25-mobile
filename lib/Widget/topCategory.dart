@@ -20,17 +20,17 @@ class _TopCategoryState extends State<TopCategory> {
   // final List<String> items = List.generate(20, (index) => 'Item $index');
   List<TopServiceModel> service = [];
   TopServiceModel service1 =
-      TopServiceModel("Casual Wear", "assets/cloths/i8.jpg");
+      TopServiceModel("Casual Wear", "assets/cloths/i8.jpg", 100.22);
   TopServiceModel service2 =
-      TopServiceModel("Formal Attire", "assets/cloths/i7.jpg");
+      TopServiceModel("Formal Attire", "assets/cloths/i7.jpg", 100.22);
   TopServiceModel service3 =
-      TopServiceModel("Outerwear", "assets/cloths/i6.jpg");
+      TopServiceModel("Outerwear", "assets/cloths/i6.jpg", 100.22);
   TopServiceModel service4 =
-      TopServiceModel("Activewear", "assets/cloths/i7.jpg");
+      TopServiceModel("Activewear", "assets/cloths/i7.jpg", 100.22);
   TopServiceModel service5 =
-      TopServiceModel("Sleepwear", "assets/cloths/i7.jpg");
+      TopServiceModel("Sleepwear", "assets/cloths/i7.jpg", 100.22);
   TopServiceModel service6 =
-      TopServiceModel("Business Casual", "assets/cloths/i7.jpg");
+      TopServiceModel("Business Casual", "assets/cloths/i7.jpg", 100.22);
 
   List<TopCategoryModel> category = [];
   TopCategoryModel topCategory1 =
@@ -212,7 +212,8 @@ class _TopCategoryState extends State<TopCategory> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => CartView(service[index])));
+                                            builder: (context) =>
+                                                CartView(service[index])));
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(

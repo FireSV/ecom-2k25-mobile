@@ -24,7 +24,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-
   void openDrawer() {
     _scaffoldKey.currentState?.openDrawer();
   }
@@ -35,34 +34,45 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: secondaryColor2.withAlpha(-100),
+      backgroundColor: grey,
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: text4,
+        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        showUnselectedLabels: true,
+        unselectedItemColor: Colors.grey,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              backgroundColor: headerNavigation),
+            icon: Icon(
+              Icons.home,
+              color: _selectedIndex == 0 ? navigationIcon : Colors.grey,
+            ),
+            label: 'Home',
+            backgroundColor: headerNavigation,
+          ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopify),
+            icon: Icon(Icons.shopify,
+                color: _selectedIndex == 1 ? navigationIcon : Colors.grey),
             label: 'Shop',
             backgroundColor: headerNavigation,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
+            icon: Icon(Icons.shopping_cart,
+                color: _selectedIndex == 2 ? navigationIcon : Colors.grey),
             label: 'Cart',
             backgroundColor: headerNavigation,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.settings,
+                color: _selectedIndex == 3 ? navigationIcon : Colors.grey),
             label: 'Settings',
             backgroundColor: headerNavigation,
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
         onTap: _onItemTapped,
       ),
-      drawer: drawerWidget(),
+      drawer: drawerWidget(context),
       body: SafeArea(
         child: content[_selectedIndex],
       ),

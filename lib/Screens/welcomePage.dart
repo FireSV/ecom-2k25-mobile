@@ -20,58 +20,58 @@ class _WelcomePageState extends State<WelcomePage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
+      color: headerNavigation,
       child: RefreshIndicator(
         onRefresh: () async {},
         child: SingleChildScrollView(
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10,left: 20),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     InkWell(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(10),
-                          bottomRight: Radius.circular(10)),
+                      borderRadius: BorderRadius.circular(
+                         1000),
                       onTap: () => {
                         widget.openDrawer()
                       },
                       child: Container(
                           height: 45,
-                          width: 50,
+                          width: 45,
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: navigationIcon,
                               boxShadow: [
                                 BoxShadow(
-                                    color: Colors.black12, blurRadius: 20),
+                                    color: Colors.black12, blurRadius: 20,),
                               ],
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10))),
-                          child: Icon(Icons.menu)),
+                            borderRadius: BorderRadius.circular(
+                                1000),),
+                          child: Icon(Icons.menu,size: 18,)),
                     ),
-                    Container(
-                        height: 45,
-                        width: 250,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(color: Colors.black12, blurRadius: 20),
-                            ],
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(10),
-                                topLeft: Radius.circular(10))),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                          child: Text(
-                            "Welcome to FireStore\nSandun",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: text2,
-                            ),
-                          ),
-                        )),
+                    // Container(
+                    //     height: 45,
+                    //     width: 250,
+                    //     alignment: Alignment.center,
+                    //     decoration: BoxDecoration(
+                    //         color: Colors.white,
+                    //         boxShadow: [
+                    //           BoxShadow(color: Colors.black12, blurRadius: 20),
+                    //         ],
+                    //         borderRadius: BorderRadius.only(
+                    //             bottomLeft: Radius.circular(10),
+                    //             topLeft: Radius.circular(10))),
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    //       child: Text(
+                    //         "Welcome to FireStore Sandun",
+                    //         style: TextStyle(
+                    //           fontWeight: FontWeight.bold,
+                    //           color: text4,
+                    //         ),
+                    //       ),
+                    //     )),
                     // Container(
                     //     height: 45,
                     //     width: 150,

@@ -1,8 +1,10 @@
 import 'package:fire_com/Screens/home.dart';
 import 'package:fire_com/Screens/splash.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 
 void main() {
+  Gemini.init(apiKey: "AIzaSyBaSAhdYds8SN9zF6dPfAhltT7RTIw4D9c");
   runApp(const MyApp());
 }
 

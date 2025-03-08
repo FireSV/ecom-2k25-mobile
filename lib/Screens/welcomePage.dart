@@ -50,47 +50,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                 1000),),
                           child: Icon(Icons.menu,size: 18,)),
                     ),
-                    // Container(
-                    //     height: 45,
-                    //     width: 250,
-                    //     alignment: Alignment.center,
-                    //     decoration: BoxDecoration(
-                    //         color: Colors.white,
-                    //         boxShadow: [
-                    //           BoxShadow(color: Colors.black12, blurRadius: 20),
-                    //         ],
-                    //         borderRadius: BorderRadius.only(
-                    //             bottomLeft: Radius.circular(10),
-                    //             topLeft: Radius.circular(10))),
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    //       child: Text(
-                    //         "Welcome to FireStore Sandun",
-                    //         style: TextStyle(
-                    //           fontWeight: FontWeight.bold,
-                    //           color: text4,
-                    //         ),
-                    //       ),
-                    //     )),
-                    // Container(
-                    //     height: 45,
-                    //     width: 150,
-                    //     decoration: BoxDecoration(
-                    //         color: Colors.white,
-                    //         boxShadow: [
-                    //           BoxShadow(color: Colors.black12, blurRadius: 20),
-                    //         ],
-                    //         borderRadius: BorderRadius.only(
-                    //             bottomLeft: Radius.circular(10),
-                    //             topLeft: Radius.circular(10))),
-                    //     child: Center(
-                    //         child: Text(
-                    //       "FIRE STORE",
-                    //       style: TextStyle(
-                    //           fontWeight: FontWeight.bold,
-                    //           color: text2,
-                    //           fontSize: 20),
-                    //     ))),
+
                   ],
                 ),
               ),

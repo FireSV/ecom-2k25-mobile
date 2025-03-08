@@ -31,7 +31,14 @@ class _TopCategoryWidgetState extends State<TopCategoryWidget> {
               height: 50,
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(1000),
-                  child: Image.asset(widget.image)),
+                  child: Image.asset(widget.image,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/common/no_image.jpg', // Fallback image
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  )),
             ),
           ),
           Text(

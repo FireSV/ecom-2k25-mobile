@@ -1,0 +1,2 @@
+E:/ICBT/Final Project/ecom-2k25-mobile/android/app/.cxx/Debug/1d4v1l60/armeabi-v7a/CMakeFiles/edit_cache.dir
+E:/ICBT/Final Project/ecom-2k25-mobile/android/app/.cxx/Debug/1d4v1l60/armeabi-v7a/CMakeFiles/rebuild_cache.dir

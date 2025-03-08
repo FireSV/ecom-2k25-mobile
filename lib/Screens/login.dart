@@ -38,6 +38,9 @@ class _LoginState extends State<Login> {
     http.Response response =
         await refreshToken(_prefs.getString("refreshToken"));
     if (response.statusCode == 200) {
+      setState(() {
+        _loading = false;
+      });
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => Home()),

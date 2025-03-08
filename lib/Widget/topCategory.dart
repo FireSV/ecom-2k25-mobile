@@ -1,10 +1,16 @@
+import 'dart:convert';
+
+import 'package:fire_com/API/BaseURL/baseURL.dart';
 import 'package:fire_com/Colors/ColorsLocal.dart';
 import 'package:fire_com/Model/top_category_model.dart';
 import 'package:fire_com/Model/top_service_model.dart';
 import 'package:fire_com/Screens/cartView.dart';
+import 'package:fire_com/Screens/productList.dart';
 import 'package:fire_com/Widget/loading.dart';
 import 'package:fire_com/Widget/topCategoryWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 List<TopCategoryWidget> _topCategoryWidget = [];
 bool _loading = false;
@@ -17,67 +23,81 @@ class TopCategory extends StatefulWidget {
 }
 
 class _TopCategoryState extends State<TopCategory> {
-  // final List<String> items = List.generate(20, (index) => 'Item $index');
-  List<TopServiceModel> service = [];
-  TopServiceModel service1 =
-      TopServiceModel("Casual Wear", "assets/cloths/i8.jpg", 100.22);
-  TopServiceModel service2 =
-      TopServiceModel("Formal Attire", "assets/cloths/i7.jpg", 100.22);
-  TopServiceModel service3 =
-      TopServiceModel("Outerwear", "assets/cloths/i6.jpg", 100.22);
-  TopServiceModel service4 =
-      TopServiceModel("Activewear", "assets/cloths/i7.jpg", 100.22);
-  TopServiceModel service5 =
-      TopServiceModel("Sleepwear", "assets/cloths/i7.jpg", 100.22);
-  TopServiceModel service6 =
-      TopServiceModel("Business Casual", "assets/cloths/i7.jpg", 100.22);
+  List<TopServiceModel> categoryList = [];
+  List<TopCategoryModel> topCategoryList = [];
 
-  List<TopCategoryModel> category = [];
-  TopCategoryModel topCategory1 =
-      TopCategoryModel("Casual", "assets/cloths/i8.jpg");
-  TopCategoryModel topCategory2 =
-      TopCategoryModel("Formal", "assets/cloths/i7.jpg");
-  TopCategoryModel topCategory3 =
-      TopCategoryModel("Outerwear", "assets/cloths/i8.jpg");
-  TopCategoryModel topCategory4 =
-      TopCategoryModel("Activewear", "assets/cloths/i7.jpg");
-  TopCategoryModel topCategory5 =
-      TopCategoryModel("Sleepwear", "assets/cloths/i7.jpg");
-  TopCategoryModel topCategory6 =
-      TopCategoryModel("Business", "assets/cloths/i7.jpg");
 
   @override
   void initState() {
-    service.add(service1);
-    service.add(service2);
-    service.add(service3);
-    service.add(service4);
-    service.add(service5);
-    service.add(service6);
 
-    category.add(topCategory1);
-    category.add(topCategory2);
-    category.add(topCategory3);
-    category.add(topCategory4);
-    category.add(topCategory5);
-    category.add(topCategory6);
-    category.add(topCategory6);
-    category.add(topCategory6);
-    category.add(topCategory6);
     addCategory();
+    addTopCategory();
     super.initState();
   }
 
-  void addCategory() {
+  void addTopCategory() async {
     setState(() {
       _loading = true;
     });
-    for (var loop in category) {
-      setState(() {
-        TopCategoryWidget category = TopCategoryWidget(loop.image, loop.name);
-        _topCategoryWidget.add(category);
-      });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getString("user"));
+    http.Response response = await http.get(
+      Uri.parse(baseURL + "api/v1/top-category/0/10"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization":
+            "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      for (var loop in jsonDecode(response.body)["content"]) {
+        setState(() {
+          try {
+            _topCategoryWidget.add(TopCategoryWidget(
+                loop["category"]["imageUrl"].toString(),
+                loop["category"]["name"].toString()));
+          } catch (e) {
+            print(e);
+          }
+        });
+      }
     }
+
+    setState(() {
+      _loading = false;
+    });
+  }
+
+  void addCategory() async {
+    setState(() {
+      _loading = true;
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getString("user"));
+    http.Response response = await http.get(
+      Uri.parse(baseURL + "api/v1/category/0/10"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization":
+            "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      for (var loop in jsonDecode(response.body)["content"]) {
+        setState(() {
+          try {
+            // _topCategoryWidget.add(category);
+            categoryList.add(TopServiceModel(
+                loop["name"].toString(), loop["imageUrl"].toString(), 100.22));
+          } catch (e) {
+            print(e);
+          }
+        });
+      }
+    }
+
     setState(() {
       _loading = false;
     });
@@ -87,7 +107,7 @@ class _TopCategoryState extends State<TopCategory> {
   Widget build(BuildContext context) {
     return _loading
         ? Loading()
-        : service.isNotEmpty
+        : categoryList.isNotEmpty
             ? Container(
                 decoration: BoxDecoration(
                     boxShadow: [
@@ -125,41 +145,44 @@ class _TopCategoryState extends State<TopCategory> {
                         ),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              bottom: 20, top: 20, left: 20),
-                          child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 40,
-                              width: 150,
-                              decoration: BoxDecoration(
-                                  // color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black12, blurRadius: 20),
-                                  ],
-                                  borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(10),
-                                      topRight: Radius.circular(10))),
-                              child: Text(
-                                "Top Category",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: text4,
-                                    fontSize: 20),
-                              )),
-                        ),
-                      ],
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: _topCategoryWidget,
+                    if (_topCategoryWidget.length > 0)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: 20, top: 20, left: 20),
+                            child: Container(
+                                alignment: Alignment.centerLeft,
+                                height: 40,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    // color: Colors.white,
+                                    boxShadow: [
+                                      // BoxShadow(
+                                      //     color: Colors.black12,
+                                      //     blurRadius: 20),
+                                    ],
+                                    borderRadius: BorderRadius.only(
+                                        bottomRight: Radius.circular(10),
+                                        topRight: Radius.circular(10))),
+                                child: Text(
+                                  "Top Category",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: text4,
+                                      fontSize: 20),
+                                )),
+                          ),
+                        ],
                       ),
-                    ),
+                    if (_topCategoryWidget.length > 0)
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: _topCategoryWidget,
+                        ),
+                      ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -173,14 +196,14 @@ class _TopCategoryState extends State<TopCategory> {
                               decoration: BoxDecoration(
                                   // color: Colors.white,
                                   boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black12, blurRadius: 20),
+                                    // BoxShadow(
+                                    //     color: Colors.black12, blurRadius: 20),
                                   ],
                                   borderRadius: BorderRadius.only(
                                       bottomRight: Radius.circular(10),
                                       topRight: Radius.circular(10))),
                               child: Text(
-                                "Shopping",
+                                "Category",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: text4,
@@ -200,7 +223,7 @@ class _TopCategoryState extends State<TopCategory> {
                           crossAxisSpacing: 10.0, // Space between columns
                           mainAxisSpacing: 10.0, // Space between rows
                         ),
-                        itemCount: service.length,
+                        itemCount: categoryList.length,
                         itemBuilder: (context, index) {
                           return Card(
                             shadowColor: Colors.black,
@@ -213,7 +236,7 @@ class _TopCategoryState extends State<TopCategory> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                CartView(service[index])));
+                                                ProductList(categoryList[index])));
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -231,8 +254,16 @@ class _TopCategoryState extends State<TopCategory> {
                                           borderRadius:
                                               BorderRadius.circular(20.0),
                                           child: Image.asset(
-                                            service[index].image,
+                                            categoryList[index].image,
                                             fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Image.asset(
+                                                'assets/common/no_image.jpg',
+                                                // Fallback image
+                                                fit: BoxFit.cover,
+                                              );
+                                            },
                                           ),
                                         ),
                                       ],

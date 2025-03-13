@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:fire_com/Model/top_service_model.dart';
 import 'package:http/http.dart' as http;
 
-class ProductList extends StatefulWidget {
+class ProductPage extends StatefulWidget {
   final TopServiceModel topServiceModel;
 
-  const ProductList(this.topServiceModel, {super.key});
+  const ProductPage(this.topServiceModel, {super.key});
 
   @override
-  State<ProductList> createState() => _ProductListState();
+  State<ProductPage> createState() => _ProductPageState();
 }
 
-class _ProductListState extends State<ProductList> {
+class _ProductPageState extends State<ProductPage> {
   List<Map<String, dynamic>> productList = [];
   bool isLoading = true;
 

@@ -1,5 +1,6 @@
 import 'package:fire_com/Colors/ColorsLocal.dart';
 import 'package:fire_com/Screens/login.dart';
+import 'package:fire_com/Screens/userAddress.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,6 +44,14 @@ Widget drawerWidget(BuildContext context) {
         },
       ),
       ListTile(
+        leading: Icon(Icons.location_on),
+        title: Text('Address'),
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => UserAddress()));
+        },
+      ),
+      ListTile(
         leading: Icon(Icons.logout),
         title: Text('Logout'),
         onTap: () async {
@@ -51,7 +60,7 @@ Widget drawerWidget(BuildContext context) {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => Login()),
-                (route) => false, // Removes all previous routes
+            (route) => false, // Removes all previous routes
           );
         },
       ),

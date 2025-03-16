@@ -35,6 +35,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   lottie: ^3.3.1
+  syncfusion_flutter_charts: ^28.2.11
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +53,7 @@ dev_dependencies:
   deepseek: ^1.1.0
   flutter_gemini: ^3.0.0
   webview_flutter: ^4.10.0
+  dropdown_search: ^5.0.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

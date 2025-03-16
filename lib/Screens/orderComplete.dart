@@ -10,6 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home.dart';
 
+String _orderId = "";
+
 class OrderComplete extends StatefulWidget {
   String id;
 
@@ -22,22 +24,46 @@ class OrderComplete extends StatefulWidget {
 class _OrderCompleteState extends State<OrderComplete> {
   @override
   void initState() {
-    deleteCart();
+    orderCheck();
     super.initState();
+  }
+
+  Future<void> orderCheck() async {
+    print(widget.id);
+    String id = widget.id.substring(0, widget.id.length - 1);
+    await addOrder(id.split("/").last);
+
+    // deleteCart();
+  }
+
+  Future<void> addOrder(String tempId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    http.Response response =
+        await http.post(Uri.parse("${baseURL}api/v1/order"),
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization":
+                  "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
+            },
+            body: jsonEncode({"tempId": tempId}));
+    if (response.statusCode == 200) {
+      setState(() {
+        _orderId = jsonDecode(response.body)["id"].toString();
+      });
+    }
   }
 
   Future<void> deleteCart() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     http.Response response = await http.get(
-      Uri.parse(baseURL +
-          "api/v1/cart/clear/${jsonDecode(prefs.getString("user").toString())["id"]}"),
+      Uri.parse(
+          "${baseURL}api/v1/cart/clear/${jsonDecode(prefs.getString("user").toString())["id"]}"),
       headers: {
         "Content-Type": "application/json",
         "Authorization":
             "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
       },
     );
-    print(response.statusCode);
   }
 
   @override
@@ -85,7 +111,7 @@ class _OrderCompleteState extends State<OrderComplete> {
                     const SizedBox(height: 10),
                     Text(
                       // "Order ID: #${widget.orderId}",
-                      "Order ID: #",
+                      "Order ID: #${_orderId}",
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -104,6 +130,7 @@ class _OrderCompleteState extends State<OrderComplete> {
                             horizontal: 24, vertical: 12),
                       ),
                       onPressed: () {
+                        // orderCheck();
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(builder: (context) => Home()),

@@ -48,7 +48,8 @@ class _TopCategoryState extends State<TopCategory> {
       },
     );
 
-    print(  "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}");
+    print(
+        "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}");
 
     if (response.statusCode == 200) {
       for (var loop in jsonDecode(response.body)["content"]) {
@@ -56,7 +57,9 @@ class _TopCategoryState extends State<TopCategory> {
           try {
             _topCategoryWidget.add(TopCategoryWidget(
                 loop["category"]["imageUrl"].toString(),
-                loop["category"]["name"].toString()));
+                loop["category"]["name"].toString(),
+                TopServiceModel(loop["category"]["name"].toString(),
+                    loop["category"]["imageUrl"].toString(), 100.22, loop)));
           } catch (e) {
             print(e);
           }

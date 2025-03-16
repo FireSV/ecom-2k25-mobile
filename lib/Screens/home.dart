@@ -1,4 +1,7 @@
 import 'package:fire_com/Colors/ColorsLocal.dart';
+import 'package:fire_com/Screens/aiPage.dart';
+import 'package:fire_com/Screens/orderPage.dart';
+import 'package:fire_com/Screens/productPage.dart';
 import 'package:fire_com/Screens/shop.dart';
 import 'package:fire_com/Screens/welcomePage.dart';
 import 'package:fire_com/Widget/drawer.dart';
@@ -28,7 +31,8 @@ class _HomeState extends State<Home> {
     _scaffoldKey.currentState?.openDrawer();
   }
 
-  List<Widget> get content => [WelcomePage(openDrawer), Shop()];
+  List<Widget> get content =>
+      [WelcomePage(openDrawer), ProductPage(), OrderPage(), AiPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +61,9 @@ class _HomeState extends State<Home> {
             backgroundColor: headerNavigation,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart,
+            icon: Icon(Icons.shopping_bag,
                 color: _selectedIndex == 2 ? navigationIcon : Colors.grey),
-            label: 'Cart',
+            label: 'My Orders',
             backgroundColor: headerNavigation,
           ),
           BottomNavigationBarItem(

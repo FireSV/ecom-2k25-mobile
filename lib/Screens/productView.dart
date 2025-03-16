@@ -1,21 +1,20 @@
 import 'dart:convert';
 
 import 'package:fire_com/Colors/ColorsLocal.dart';
-import 'package:fire_com/Model/top_service_model.dart';
+import 'package:fire_com/Model/product.dart';
 import 'package:fire_com/Widget/backButtonWidget.dart';
 import 'package:fire_com/Widget/cartButton.dart';
 import 'package:fire_com/Widget/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../API/BaseURL/baseURL.dart' show baseURL;
 
-
-Map<String, dynamic> productMap = jsonDecode("");
 bool _loading = false;
 
 class ProductView extends StatefulWidget {
-  Map<String, dynamic> product;
+  Product product;
 
   ProductView(this.product, {super.key});
 
@@ -29,17 +28,17 @@ class _ProductViewState extends State<ProductView> {
     setState(() {
       _loading = true;
     });
-    try {
-      String formattedJson = widget.product["fullDetails"]
-          .replaceAllMapped(RegExp(r'(\w+):'),
-              (match) => '"${match[1]}":') // Wrap keys in quotes
-          .replaceAllMapped(RegExp(r':\s*([a-zA-Z_]+)'),
-              (match) => ': "${match[1]}"') // Wrap string values in quotes
-          .replaceAll("'", '"');
-      productMap = jsonDecode(formattedJson);
-    } catch (e) {
-      print(e);
-    }
+    // try {
+    //   String formattedJson = widget.product["fullDetails"]
+    //       .replaceAllMapped(RegExp(r'(\w+):'),
+    //           (match) => '"${match[1]}":') // Wrap keys in quotes
+    //       .replaceAllMapped(RegExp(r':\s*([a-zA-Z_]+)'),
+    //           (match) => ': "${match[1]}"') // Wrap string values in quotes
+    //       .replaceAll("'", '"');
+    //   productMap = jsonDecode(formattedJson);
+    // } catch (e) {
+    //   print(e);
+    // }
     setState(() {
       _loading = false;
     });
@@ -72,7 +71,7 @@ class _ProductViewState extends State<ProductView> {
                               width: MediaQuery.of(context).size.width,
                               height: (MediaQuery.of(context).size.height / 2) -
                                   100,
-                              child: Image.network(productMap["image"].toString(),
+                              child: Image.network(widget.product.toString(),
                                   errorBuilder: (context, error, stackTrace) {
                                 return Image.asset(
                                   'assets/common/no_image.jpg', // Fallback image
@@ -96,7 +95,7 @@ class _ProductViewState extends State<ProductView> {
                                       height: 45,
                                       child: Center(
                                         child: Text(
-                                          productMap["name"].toString(),
+                                          widget.product.name,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20),
@@ -109,8 +108,7 @@ class _ProductViewState extends State<ProductView> {
                             ),
                             Positioned(
                                 left: 20, top: 20, child: BackButtonWidget()),
-                            Positioned(
-                                right: 20, top: 20, child: CartButton())
+                            Positioned(right: 20, top: 20, child: CartButton())
                           ],
                         ),
                       ),
@@ -150,7 +148,7 @@ class _ProductViewState extends State<ProductView> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Description : ${productMap["description"].toString()}",
+                                          "Description : ${widget.product.description}",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20),
@@ -182,11 +180,11 @@ class _ProductViewState extends State<ProductView> {
                                                   fontSize: 20),
                                             ),
                                             Text(
-                                              productMap["price"].toString() ==
+                                              widget.product.price.toString() ==
                                                       "null"
                                                   ? "0.00"
-                                                  : productMap["price"]
-                                                      .toString(),
+                                                  : widget.product.price
+                                                  .toStringAsFixed(2),
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 25),
@@ -229,31 +227,188 @@ class _ProductViewState extends State<ProductView> {
                                 onTap: () async {
                                   SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
-                                  http.Response response = await http.post(
-                                    body: jsonEncode({
-                                      "productId": productMap["id"].toString(),
-                                      "qty": 1,
-                                      "userId": jsonDecode(prefs.getString("user").toString())["id"].toString(),
-                                    }),
-                                    Uri.parse(baseURL + "api/v1/cart"),
+
+                                  http.Response response2 = await http.get(
+                                    Uri.parse(
+                                        "${baseURL}api/v1/cart/${jsonDecode(prefs.getString("user").toString())["id"]}"),
                                     headers: {
                                       "Content-Type": "application/json",
                                       "Authorization":
                                           "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
                                     },
                                   );
-                                  print(response.body);
-                                  if (response.statusCode == 200) {
-                                    const snackBar = SnackBar(
-                                        content: Text('Added successfully !'));
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                  } else {
-                                    const snackBar = SnackBar(
-                                        content:
-                                            Text('Something went wrong !'));
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
+                                  print(
+                                      jsonDecode(response2.body)
+                                          .toString());
+
+                                  if (response2.statusCode == 200) {
+                                    if (jsonDecode(response2.body).length ==
+                                        0) {
+                                      http.Response response = await http.post(
+                                        body: jsonEncode({
+                                          "productId": widget.product.id,
+                                          "qty": 1,
+                                          "userId": jsonDecode(prefs
+                                                  .getString("user")
+                                                  .toString())["id"]
+                                              .toString(),
+                                        }),
+                                        Uri.parse(baseURL + "api/v1/cart"),
+                                        headers: {
+                                          "Content-Type": "application/json",
+                                          "Authorization":
+                                              "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
+                                        },
+                                      );
+                                      if (response.statusCode == 200) {
+                                        const snackBar = SnackBar(
+                                            content:
+                                                Text('Added successfully !'));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      } else {
+                                        const snackBar = SnackBar(
+                                            content:
+                                                Text('Something went wrong !'));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      }
+                                    } else if (int.tryParse(
+                                            jsonDecode(response2.body)[0]
+                                                    ["userId"]
+                                                .toString()) ==
+                                        int.tryParse(
+                                            widget.product.createdUser)) {
+                                      http.Response response = await http.post(
+                                        body: jsonEncode({
+                                          "productId": widget.product.id,
+                                          "qty": 1,
+                                          "userId": jsonDecode(prefs
+                                                  .getString("user")
+                                                  .toString())["id"]
+                                              .toString(),
+                                        }),
+                                        Uri.parse(baseURL + "api/v1/cart"),
+                                        headers: {
+                                          "Content-Type": "application/json",
+                                          "Authorization":
+                                              "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
+                                        },
+                                      );
+                                      if (response.statusCode == 200) {
+                                        const snackBar = SnackBar(
+                                            content:
+                                                Text('Added successfully !'));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      } else {
+                                        const snackBar = SnackBar(
+                                            content:
+                                                Text('Something went wrong !'));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      }
+                                    } else {
+                                      Future<bool> showConfirmationDialog(
+                                          BuildContext context,
+                                          String title,
+                                          String message) async {
+                                        return await showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text(title,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                  content: Text(message),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () => Navigator
+                                                              .of(context)
+                                                          .pop(
+                                                              false), // User pressed No
+                                                      child: Text("No",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.red)),
+                                                    ),
+                                                    ElevatedButton(
+                                                      onPressed: () async {
+                                                        SharedPreferences
+                                                            prefs =
+                                                            await SharedPreferences
+                                                                .getInstance();
+                                                        await http.get(
+                                                          Uri.parse(
+                                                              "${baseURL}api/v1/cart/clear/${jsonDecode(prefs.getString("user").toString())["id"]}"),
+                                                          headers: {
+                                                            "Content-Type":
+                                                                "application/json",
+                                                            "Authorization":
+                                                                "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
+                                                          },
+                                                        );
+
+                                                        //   add
+
+                                                        http.Response response =
+                                                            await http.post(
+                                                          body: jsonEncode({
+                                                            "productId": widget
+                                                                .product.id,
+                                                            "qty": 1,
+                                                            "userId": jsonDecode(prefs
+                                                                    .getString(
+                                                                        "user")
+                                                                    .toString())["id"]
+                                                                .toString(),
+                                                          }),
+                                                          Uri.parse(baseURL +
+                                                              "api/v1/cart"),
+                                                          headers: {
+                                                            "Content-Type":
+                                                                "application/json",
+                                                            "Authorization":
+                                                                "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
+                                                          },
+                                                        );
+                                                        if (response
+                                                                .statusCode ==
+                                                            200) {
+                                                          const snackBar = SnackBar(
+                                                              content: Text(
+                                                                  'Added successfully !'));
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  snackBar);
+                                                        } else {
+                                                          const snackBar = SnackBar(
+                                                              content: Text(
+                                                                  'Something went wrong !'));
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  snackBar);
+                                                        }
+                                                        Navigator.of(context)
+                                                            .pop(false);
+                                                      }, // User pressed Yes
+                                                      child: Text("Yes"),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ) ??
+                                            false; // Returns false if dialog is dismissed
+                                      }
+
+                                      showConfirmationDialog(
+                                          context,
+                                          "Are you sure?",
+                                          "Multiple vendors are not supported for delivery. Do you want to clear the cart and add this item instead?");
+                                    }
                                   }
                                 },
                                 child: Container(

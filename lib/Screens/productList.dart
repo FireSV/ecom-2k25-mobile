@@ -1,3 +1,4 @@
+import 'package:fire_com/Model/product.dart';
 import 'package:fire_com/Screens/productView.dart';
 import 'package:fire_com/Widget/backButtonWidget.dart';
 import 'package:fire_com/Widget/cartButton.dart';
@@ -15,7 +16,8 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
-  List<Map<String, dynamic>> productList = [];
+  // List<Map<String, dynamic>> productList = [];
+  List<Product> productList = [];
   bool isLoading = true;
 
   @override
@@ -32,17 +34,12 @@ class _ProductListState extends State<ProductList> {
       productList = [];
     });
     try {
-      for (var res in widget.topServiceModel?.res["product"]) {
-        setState(() {
-          productList.add({
-            "id": res["id"].toString(),
-            "name": res["name"].toString(),
-            "image": res["image"],
-            "price": "\$${res["price"]}",
-            "fullDetails": "${res}"
-          });
-        });
-      }
+      List<dynamic> jsonData = widget.topServiceModel?.res["product"];
+      setState(() {
+        productList = jsonData
+            .map((item) => Product.fromJson(item as Map<String, dynamic>))
+            .toList();
+      });
     } catch (e) {}
 
     setState(() {
@@ -127,7 +124,7 @@ class _ProductListState extends State<ProductList> {
                           ),
                           itemCount: productList.length,
                           itemBuilder: (context, index) {
-                            Map<String, dynamic> product = productList[index];
+                            Product product = productList[index];
                             return InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -149,7 +146,7 @@ class _ProductListState extends State<ProductList> {
                                         borderRadius: BorderRadius.vertical(
                                             top: Radius.circular(10)),
                                         child: Image.network(
-                                          product["image"],
+                                          product.image,
                                           width: double.infinity,
                                           height: 100,
                                           fit: BoxFit.cover,
@@ -170,16 +167,21 @@ class _ProductListState extends State<ProductList> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            product["name"],
+                                            product.name,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
                                             textAlign: TextAlign.center,
                                           ),
                                           SizedBox(height: 4),
                                           Text(
-                                            product["price"],
+                                            "${product.price.toStringAsFixed(2)}",
                                             style:
-                                                TextStyle(color: Colors.green),
+                                                TextStyle(color: Colors.green,fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            "Shop : ${product.user.firstName}",
+                                            // style:
+                                                // TextStyle(color: Colors.green),
                                           ),
                                         ],
                                       ),

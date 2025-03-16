@@ -10,6 +10,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Colors/ColorsLocal.dart' show navigationIcon, secondaryColor;
+
 bool _loading = false;
 bool _error = false;
 
@@ -69,8 +71,7 @@ class _PaymentGatewayWebViewState extends State<PaymentGatewayWebView> {
     if (response.statusCode == 200) {
       setState(() {
         loadURL(response.body);
-
-        // _error = false;
+        _error = false;
       });
     } else {
       setState(() {
@@ -94,11 +95,8 @@ class _PaymentGatewayWebViewState extends State<PaymentGatewayWebView> {
               // Navigator.push(context,
               //     MaterialPageRoute(builder: (context) => OrderComplete(url.split("/").last)));
 
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          OrderComplete(url.split("/").last)));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => OrderComplete(url)));
             }
           },
         ),
@@ -110,12 +108,45 @@ class _PaymentGatewayWebViewState extends State<PaymentGatewayWebView> {
     return _loading
         ? Loading()
         : Scaffold(
+            backgroundColor: secondaryColor,
             body: SafeArea(
                 child: _error
                     ? Container(
+                        alignment: Alignment.center,
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height,
-                        child: Text("Something Went wrong !"),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Something Went wrong !",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: navigationIcon,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: Colors.white, width: 3)),
+                                width: 200,
+                                height: 45,
+                                child: Center(
+                                    child: Text(
+                                  "Go Back",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                     : Stack(children: [
                         WebViewWidget(controller: _controller),

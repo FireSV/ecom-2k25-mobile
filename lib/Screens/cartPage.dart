@@ -87,15 +87,14 @@ class _CartPageState extends State<CartPage> {
 
   @override
   void initState() {
-    GetDetails();
+    getDetails();
     super.initState();
   }
 
-  Future<void> GetDetails() async {
+  Future<void> getDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     http.Response response = await http.get(
-      Uri.parse("${baseURL}api/v1/cart/" +
-          jsonDecode(prefs.getString("user").toString())["id"].toString()),
+      Uri.parse("${baseURL}api/v1/cart/${jsonDecode(prefs.getString("user").toString())["id"]}"),
       headers: {
         "Content-Type": "application/json",
         "Authorization":
@@ -166,7 +165,7 @@ class _CartPageState extends State<CartPage> {
                               height: 45,
                               child: Center(
                                   child: Text(
-                                "Shopping",
+                                "Go to Shopping",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               )),
                             ),

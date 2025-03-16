@@ -1,140 +1,170 @@
-import 'package:fire_com/Screens/productView.dart';
-import 'package:fire_com/Widget/backButtonWidget.dart';
-import 'package:fire_com/Widget/cartButton.dart';
+import 'dart:convert';
+import 'package:fire_com/Model/product.dart';
 import 'package:flutter/material.dart';
-import 'package:fire_com/Model/top_service_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fire_com/API/BaseURL/baseURL.dart';
+import 'package:fire_com/Screens/productView.dart';
+import 'package:fire_com/Widget/cartButton.dart';
+
+bool _initialLoad = false;
 
 class ProductPage extends StatefulWidget {
-  final TopServiceModel topServiceModel;
-
-  const ProductPage(this.topServiceModel, {super.key});
+  const ProductPage({super.key});
 
   @override
   State<ProductPage> createState() => _ProductPageState();
 }
 
 class _ProductPageState extends State<ProductPage> {
-  List<Map<String, dynamic>> productList = [];
-  bool isLoading = true;
+  List<Product> productList = [];
+  TextEditingController _searchController = TextEditingController();
+  bool _loading = false;
+  bool _isFetchingMore = false;
+  int _page = -1;
+  final int _pageSize = 10;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    fetchProducts();
+    fetch();
+    _scrollController.addListener(_scrollListener);
   }
 
-  Future<void> fetchProducts() async {
+  Future<void> fetch() async {
     setState(() {
-      isLoading = true;
+      _initialLoad = false;
     });
+    await fetchProducts();
     setState(() {
-      productList = [];
+      _initialLoad = true;
     });
-    try {
-      for (var res in widget.topServiceModel?.res["product"]) {
-        setState(() {
-          productList.add({
-            "id": res["id"].toString(),
-            "name": res["name"].toString(),
-            "image": res["image"],
-            "price": "\$${res["price"]}",
-            "fullDetails": "${res}"
-          });
-        });
-      }
-    } catch (e) {}
+  }
 
+  Future<void> fetchProducts({bool isLoadMore = false}) async {
+    if (_loading || _isFetchingMore) return;
     setState(() {
-      isLoading = false;
+      if (isLoadMore) {
+        _isFetchingMore = true;
+      } else {
+        _loading = true;
+        productList.clear();
+        _page = 0;
+      }
     });
+    setState(() {
+      _loading = false;
+      _isFetchingMore = false;
+      if (isLoadMore) _page++;
+    });
+    if ((_page == 0 && !_initialLoad) || _page != 0) {
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String token =
+            jsonDecode(prefs.getString("user").toString())["accessToken"];
+
+        final response = await http.post(
+          Uri.parse(baseURL + "api/v1/product/search/$_page/$_pageSize"),
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Bearer $token",
+          },
+          body: {"name": _searchController.text},
+        );
+
+        print(response.body);
+
+        if (response.statusCode == 200) {
+          List<dynamic> jsonData = jsonDecode(response.body);
+
+          setState(() {
+            productList = jsonData
+                .map((item) => Product.fromJson(item as Map<String, dynamic>))
+                .toList();
+          });
+        } else {
+          print("Failed to fetch data: ${response.statusCode}");
+        }
+      } catch (e) {
+        print("Error: $e");
+      }
+    }
+  }
+
+  // Scroll listener to load more data when reaching the bottom
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent &&
+        !_isFetchingMore) {
+      fetchProducts(isLoadMore: true);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       body: SafeArea(
         child: Column(
           children: [
-            Stack(
-              children: [
-                ShaderMask(
-                  shaderCallback: (Rect bounds) {
-                    return LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [
-                        Colors.black.withOpacity(0.0),
-                        Colors.black.withOpacity(0.2),
-                        Colors.black.withOpacity(0.5),
-                        Colors.black.withOpacity(0.8),
-                      ],
-                      stops: [0.0, 0.3, 0.7, 1.0], // Gradient transition points
-                    ).createShader(bounds);
-                  },
-                  blendMode: BlendMode.dstIn,
-                  child: Image.network(
-                    widget.topServiceModel.image,
-                    width: MediaQuery.of(context).size.width,
-                    height: 250,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'assets/common/no_image.jpg',
-                        width: MediaQuery.of(context).size.width,
-                        height: 250,
-                        fit: BoxFit.cover,
-                      );
+            // Search Box
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: "Search products...",
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () async {
+                      setState(() {
+                        _page = -1;
+                        _initialLoad = false;
+                      });
+                      await fetchProducts();
                     },
                   ),
-                ),
-                Positioned(
-                  bottom: 20,
-                  // left: 20,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    color: Colors.black54,
-                    child: Text(
-                      widget.topServiceModel.name,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                Positioned(top: 20, left: 20, child: BackButtonWidget()),
-                Positioned(top: 20, right: 20, child: CartButton()),
-              ],
+              ),
             ),
+
             Expanded(
-              child: isLoading
+              child: _loading
                   ? Center(child: CircularProgressIndicator())
                   : productList.isEmpty
                       ? Center(child: Text("No products available"))
                       : GridView.builder(
+                          controller: _scrollController,
                           padding: EdgeInsets.all(10),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, // Number of columns
-                            crossAxisSpacing: 10, // Space between columns
-                            mainAxisSpacing: 10, // Space between rows
-                            childAspectRatio:
-                                0.75, // Adjust to control card size
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            childAspectRatio: 0.75,
                           ),
-                          itemCount: productList.length,
+                          itemCount: productList.length + 1,
+                          // +1 for loader
                           itemBuilder: (context, index) {
-                            Map<String, dynamic> product = productList[index];
+                            if (index == productList.length) {
+                              return _isFetchingMore
+                                  ? Center(child: CircularProgressIndicator())
+                                  : SizedBox(); // Empty space when no more data
+                            }
+
+                            Product product = productList[index];
                             return InkWell(
                               onTap: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductView(product)));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductView(product),
+                                  ),
+                                );
                               },
                               child: Card(
                                 elevation: 3,
@@ -149,7 +179,7 @@ class _ProductPageState extends State<ProductPage> {
                                         borderRadius: BorderRadius.vertical(
                                             top: Radius.circular(10)),
                                         child: Image.network(
-                                          product["image"],
+                                          productList[index].image,
                                           width: double.infinity,
                                           height: 100,
                                           fit: BoxFit.cover,
@@ -170,16 +200,19 @@ class _ProductPageState extends State<ProductPage> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            product["name"],
+                                            productList[index].name,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
                                             textAlign: TextAlign.center,
                                           ),
                                           SizedBox(height: 4),
                                           Text(
-                                            product["price"],
+                                            "${(productList[index].price == null || productList[index].price == "null") ? "0.00" : productList[index].price}",
                                             style:
                                                 TextStyle(color: Colors.green),
+                                          ),
+                                          Text(
+                                            "Shop : ${product.user.firstName}",
                                           ),
                                         ],
                                       ),
@@ -191,6 +224,7 @@ class _ProductPageState extends State<ProductPage> {
                           },
                         ),
             ),
+            // Positioned(top: 20, right: 20, child: CartButton()),
           ],
         ),
       ),

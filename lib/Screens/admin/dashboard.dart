@@ -4,6 +4,7 @@ import 'package:fire_com/API/BaseURL/baseURL.dart';
 import 'package:fire_com/Colors/ColorsLocal.dart';
 import 'package:fire_com/Screens/admin/addProduct.dart';
 import 'package:fire_com/Screens/admin/orderPage.dart';
+import 'package:fire_com/Screens/admin/square.dart';
 import 'package:fire_com/Screens/login.dart' show Login;
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -38,7 +39,8 @@ class _DashboardState extends State<Dashboard> {
   Future<void> getDashboardData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     http.Response response = await http.get(
-      Uri.parse("${baseURL}api/v1/dashboard/${jsonDecode(prefs.getString("user").toString())["id"]}"),
+      Uri.parse(
+          "${baseURL}api/v1/dashboard/${jsonDecode(prefs.getString("user").toString())["id"]}"),
       headers: {
         "Content-Type": "application/json",
         "Authorization":
@@ -211,6 +213,19 @@ class _DashboardState extends State<Dashboard> {
                         icon: Icon(Icons.logout),
                         label: Text("Logout"),
                       ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Square()));
+                          },
+                          icon: Icon(Icons.settings))
                     ],
                   ),
                 ],

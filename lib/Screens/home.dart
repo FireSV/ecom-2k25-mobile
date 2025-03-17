@@ -67,9 +67,9 @@ class _HomeState extends State<Home> {
             backgroundColor: headerNavigation,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings,
+            icon: Icon(Icons.android,
                 color: _selectedIndex == 3 ? navigationIcon : Colors.grey),
-            label: 'Settings',
+            label: 'AI',
             backgroundColor: headerNavigation,
           ),
         ],

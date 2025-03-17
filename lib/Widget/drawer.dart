@@ -13,36 +13,38 @@ Widget drawerWidget(BuildContext context) {
         decoration: BoxDecoration(
           color: headerNavigation, // Turquoise
         ),
-        child: Text(
-          'FIRESTORE',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
+        child: Center(
+          child: Text(
+            'FIRESTORE',
+            style: TextStyle(
+              color: Colors.green,
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+            ),
           ),
         ),
       ),
-      ListTile(
-        leading: Icon(Icons.person),
-        title: Text('Profile'),
-        onTap: () {
-          // Handle Profile tap
-        },
-      ),
-      ListTile(
-        leading: Icon(Icons.language),
-        title: Text('Language'),
-        onTap: () {
-          // Handle Language tap
-        },
-      ),
-      ListTile(
-        leading: Icon(Icons.notifications),
-        title: Text('Notifications'),
-        onTap: () {
-          // Handle Notifications tap
-        },
-      ),
+      // ListTile(
+      //   leading: Icon(Icons.person),
+      //   title: Text('Profile'),
+      //   onTap: () {
+      //     // Handle Profile tap
+      //   },
+      // ),
+      // ListTile(
+      //   leading: Icon(Icons.language),
+      //   title: Text('Language'),
+      //   onTap: () {
+      //     // Handle Language tap
+      //   },
+      // ),
+      // ListTile(
+      //   leading: Icon(Icons.notifications),
+      //   title: Text('Notifications'),
+      //   onTap: () {
+      //     // Handle Notifications tap
+      //   },
+      // ),
       ListTile(
         leading: Icon(Icons.location_on),
         title: Text('Address'),

@@ -55,7 +55,6 @@ class _AiPageState extends State<AiPage> {
           ),
           InkWell(
             onTap: () async {
-              print('aa');
               final String apiKey = '';
               final String apiUrl = 'https://api.openai.com/v1/chat/completions';
 
@@ -88,11 +87,18 @@ class _AiPageState extends State<AiPage> {
                   // return int.tryParse(reply) ?? -1;
                   print(int.tryParse(reply) ?? -1);
                 } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(response.body)),
+                  );
                   throw Exception('Failed to get category ID');
                 }
               } catch (e) {
-                print(e);
-                // return -1; // Error case
+
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(content: Text("${e}")),
+                // );
+                //
+                print(e); // Log error
               }
             },
             child: Container(

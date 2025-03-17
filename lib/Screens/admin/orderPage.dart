@@ -122,13 +122,14 @@ class _OrderPageState extends State<OrderPage> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
+                    print(selectedStatus);
                     await _updateOrderStatus(
                         order.id,
-                        selectedStatus == " Preparing"
+                        selectedStatus == "Preparing"
                             ? 1
-                            : selectedStatus == " Shipped"
+                            : selectedStatus == "Shipped"
                                 ? 2
-                                : selectedStatus == " Delivered"
+                                : selectedStatus == "Delivered"
                                     ? 3
                                     : 4);
                     Navigator.pop(context);

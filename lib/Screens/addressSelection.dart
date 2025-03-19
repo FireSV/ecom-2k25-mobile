@@ -50,7 +50,7 @@ class _AddressSelectionState extends State<AddressSelection> {
                 res["state"].toString(),
                 res["postalCode"].toString(),
                 res["country"].toString(),
-                res["user"]["id"]));
+                res["userId"]));
           } catch (e) {}
         });
       }

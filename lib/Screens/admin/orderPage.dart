@@ -213,7 +213,9 @@ class _OrderPageState extends State<OrderPage> {
                   if (index == orders.length) {
                     return const Padding(
                       padding: EdgeInsets.all(10),
-                      child: Center(child: CircularProgressIndicator()),
+                      child: Center(
+
+                      ),
                     );
                   }
                   final order = orders[index];

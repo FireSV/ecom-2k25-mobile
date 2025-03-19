@@ -59,6 +59,7 @@ class _PaymentGatewayWebViewState extends State<PaymentGatewayWebView> {
         "userId":
             jsonDecode(prefs.getString("user").toString())["id"].toString(),
         "squareId": "string",
+        "addressId": widget.id,
         "tempPaymentLineList": list
       }),
       Uri.parse(baseURL + "api/v1/temp"),
@@ -96,7 +97,7 @@ class _PaymentGatewayWebViewState extends State<PaymentGatewayWebView> {
               //     MaterialPageRoute(builder: (context) => OrderComplete(url.split("/").last)));
 
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => OrderComplete(url)));
+                  MaterialPageRoute(builder: (context) => OrderComplete(url,widget.id)));
             }
           },
         ),

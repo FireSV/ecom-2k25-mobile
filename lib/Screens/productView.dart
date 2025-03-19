@@ -28,6 +28,7 @@ class _ProductViewState extends State<ProductView> {
     setState(() {
       _loading = true;
     });
+    print(widget.product.description);
     // try {
     //   String formattedJson = widget.product["fullDetails"]
     //       .replaceAllMapped(RegExp(r'(\w+):'),
@@ -71,7 +72,8 @@ class _ProductViewState extends State<ProductView> {
                               width: MediaQuery.of(context).size.width,
                               height: (MediaQuery.of(context).size.height / 2) -
                                   100,
-                              child: Image.network(widget.product.toString(),
+                              child: Image.network(
+                                  widget.product.image.toString(),
                                   errorBuilder: (context, error, stackTrace) {
                                 return Image.asset(
                                   'assets/common/no_image.jpg', // Fallback image
@@ -147,53 +149,94 @@ class _ProductViewState extends State<ProductView> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "Description : ${widget.product.description}",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
+                                        Flexible(
+                                          child: Text(
+                                            "Description : ${widget.product.description}",
+                                            softWrap: true,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20),
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 10, right: 10, top: 10),
-                                    child: Container(
-                                      alignment: Alignment.centerLeft,
-                                      decoration: BoxDecoration(
-                                          // color: grey.withOpacity(0.6),
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      height: 50,
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 10),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              "Price : ",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20),
+                                        left: 10, right: 10, top: 30),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                // color: grey.withOpacity(0.6),
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "Price : ",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20),
+                                                  ),
+                                                  Text(
+                                                    widget.product.price
+                                                                .toString() ==
+                                                            "null"
+                                                        ? "\$0.00"
+                                                        : "\$${widget.product.price.toStringAsFixed(2)}",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 25),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                            Text(
-                                              widget.product.price.toString() ==
-                                                      "null"
-                                                  ? "0.00"
-                                                  : widget.product.price
-                                                  .toStringAsFixed(2),
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 25),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                // color: grey.withOpacity(0.6),
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    widget.product.discount
+                                                                .toString() ==
+                                                            "null"
+                                                        ? "0.00"
+                                                        : "${widget.product.discount.toStringAsFixed(2)} OFF",
+                                                    style: TextStyle(
+                                                        decoration:
+                                                            TextDecoration
+                                                                .lineThrough,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
@@ -237,9 +280,7 @@ class _ProductViewState extends State<ProductView> {
                                           "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
                                     },
                                   );
-                                  print(
-                                      jsonDecode(response2.body)
-                                          .toString());
+                                  print(jsonDecode(response2.body).toString());
 
                                   if (response2.statusCode == 200) {
                                     if (jsonDecode(response2.body).length ==

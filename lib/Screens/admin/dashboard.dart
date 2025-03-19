@@ -28,12 +28,14 @@ class _DashboardState extends State<Dashboard> {
   double currentMonthSales = 0.0;
   int currentMonthOrders = 0;
 
+  // List<PieChartData> orderDistribution = [];
+
   List<PieChartData> orderDistribution = [
-    PieChartData('Electronics', 35, Colors.blue),
-    PieChartData('Fashion', 25, Colors.red),
-    PieChartData('Home & Kitchen', 20, Colors.green),
-    PieChartData('Books', 10, Colors.orange),
-    PieChartData('Other', 10, Colors.purple),
+    PieChartData('Laptops & Notebooks', 35, Colors.blue),
+    PieChartData('Desktops & Gaming PCs', 25, Colors.red),
+    PieChartData('Monitors & Displays', 20, Colors.green),
+    PieChartData('Computer Processors (CPUs)', 10, Colors.orange),
+    PieChartData('Graphics Cards (GPUs)', 10, Colors.purple),
   ];
 
   Future<void> getDashboardData() async {
@@ -47,8 +49,9 @@ class _DashboardState extends State<Dashboard> {
             "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
       },
     );
+    print("response.statusCode");
     print(response.body);
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       setState(() {
         try {
@@ -66,6 +69,18 @@ class _DashboardState extends State<Dashboard> {
         try {
           currentMonthOrders =
               int.parse(jsonDecode(response.body)["thisMonthOrder"].toString());
+        } catch (e) {}
+
+        try {
+          // setState(() {
+          //   orderDistribution.clear();
+          // });
+          // for (var res in jsonDecode(response.body)["salesCategoryWise"]) {
+          //   setState(() {
+          //     orderDistribution.add(PieChartData(
+          //         res["category"].toString(), res["sales"], Colors.blue));
+          //   });
+          // }
         } catch (e) {}
       });
     }

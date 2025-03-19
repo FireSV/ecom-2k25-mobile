@@ -43,9 +43,8 @@ class _LoginState extends State<Login> {
       setState(() {
         _loading = false;
       });
-
       if (jsonDecode(response.body)["user"]["roles"][0]["name"].toString() ==
-          "ROLE_VENDOR") {
+          "ROLE_ADMIN") {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => Dashboard()),
@@ -173,7 +172,7 @@ class _LoginState extends State<Login> {
 
                                       if (jsonDecode(response.body)["roles"][0]
                                               .toString() ==
-                                          "ROLE_VENDOR") {
+                                          "ROLE_ADMIN") {
                                         Navigator.pushAndRemoveUntil(
                                           context,
                                           MaterialPageRoute(

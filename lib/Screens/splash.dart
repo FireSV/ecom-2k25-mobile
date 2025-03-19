@@ -22,11 +22,11 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: welcomeBackground,
+      backgroundColor: navigationIcon,
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: Image.asset("assets/icons/logo.png"),
+        child: Image.asset("assets/icons/logo1.png"),
       ),
     );
   }

@@ -70,31 +70,43 @@ class _DeliveryMethodState extends State<DeliveryMethod> {
               //   child: Text('Continue', style: TextStyle(fontSize: 18)),
               // ),
 
-              InkWell(
-                onTap: () {
-                  // if (selectedMethod == "Square Payment") {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddressSelection(selectedMethod!,widget._cartList)));
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => PaymentGatewayWebView()));
-                  // }
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: navigationIcon,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.white, width: 3)),
-                  width: 300,
-                  height: 45,
-                  child: Center(
-                      child: Text(
-                    "Continue",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  )),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 50),
+                child: InkWell(
+                  onTap: () {
+                    // if (selectedMethod == "Square Payment") {
+                    if(selectedMethod == "Square Payment"){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddressSelection(selectedMethod!,widget._cartList)));
+
+                    }else{
+                      const snackBar = SnackBar(
+                        content: Text('Cash on delivery is not available !'),
+                      );
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(snackBar);
+                    }
+                     // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => PaymentGatewayWebView()));
+                    // }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: navigationIcon,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.white, width: 3)),
+                    width: 300,
+                    height: 45,
+                    child: Center(
+                        child: Text(
+                      "Continue",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )),
+                  ),
                 ),
               ),
             ],

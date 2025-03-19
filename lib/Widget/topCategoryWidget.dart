@@ -15,6 +15,12 @@ class TopCategoryWidget extends StatefulWidget {
 
 class _TopCategoryWidgetState extends State<TopCategoryWidget> {
   @override
+  void initState() {
+    print("widget.image");
+    print(widget.topServiceModel.image);
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
@@ -41,7 +47,7 @@ class _TopCategoryWidgetState extends State<TopCategoryWidget> {
                 height: 50,
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(1000),
-                    child: Image.asset(
+                    child: Image.network(
                       widget.image,
                       errorBuilder: (context, error, stackTrace) {
                         return Image.asset(
@@ -52,9 +58,14 @@ class _TopCategoryWidgetState extends State<TopCategoryWidget> {
                     )),
               ),
             ),
-            Text(
-              widget.name,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+            Container(
+              width: 60,
+              child: Text(
+                softWrap: true, // Allow wrapping
+                maxLines: 2, // Max two lines
+                widget.name,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              ),
             ),
           ],
         ),

@@ -13,9 +13,10 @@ import 'home.dart';
 String _orderId = "";
 
 class OrderComplete extends StatefulWidget {
+  String url;
   String id;
 
-  OrderComplete(this.id);
+  OrderComplete(this.url, this.id);
 
   @override
   State<OrderComplete> createState() => _OrderCompleteState();
@@ -29,8 +30,8 @@ class _OrderCompleteState extends State<OrderComplete> {
   }
 
   Future<void> orderCheck() async {
-    print(widget.id);
-    String id = widget.id.substring(0, widget.id.length - 1);
+    print(widget.url);
+    String id = widget.url.substring(0, widget.url.length - 1);
     await addOrder(id.split("/").last);
 
     // deleteCart();
@@ -45,7 +46,7 @@ class _OrderCompleteState extends State<OrderComplete> {
               "Authorization":
                   "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
             },
-            body: jsonEncode({"tempId": tempId}));
+            body: jsonEncode({"tempId": tempId, "addressId": widget.id}));
     if (response.statusCode == 200) {
       setState(() {
         _orderId = jsonDecode(response.body)["id"].toString();

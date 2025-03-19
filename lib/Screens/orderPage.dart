@@ -38,7 +38,7 @@ class _OrderPageState extends State<OrderPage> {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final response = await http.get(
-        Uri.parse("${baseURL}api/v1/order/$page/$pageSize"),
+        Uri.parse("${baseURL}api/v1/order/user/${jsonDecode(prefs.getString("user").toString())["id"].toString()}/$page/$pageSize"),
         headers: {
           "Content-Type": "application/json",
           "Authorization":
@@ -111,10 +111,10 @@ class _OrderPageState extends State<OrderPage> {
               itemBuilder: (context, index) {
                 if (index == orders.length) {
                   return Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: CircularProgressIndicator(),
-                    ),
+                    // child: Padding(
+                    //   padding: EdgeInsets.all(10),
+                    //   child: CircularProgressIndicator(),
+                    // ),
                   );
                 }
                 final order = orders[index];

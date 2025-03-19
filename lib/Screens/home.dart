@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: grey,
+      backgroundColor: secondaryColor2,
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: text4,
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),

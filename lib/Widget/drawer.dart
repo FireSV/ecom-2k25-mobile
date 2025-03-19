@@ -62,7 +62,7 @@ Widget drawerWidget(BuildContext context) {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => Login()),
-            (route) => false, // Removes all previous routes
+            (route) => false,
           );
         },
       ),

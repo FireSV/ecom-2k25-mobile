@@ -94,7 +94,8 @@ class _CartPageState extends State<CartPage> {
   Future<void> getDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     http.Response response = await http.get(
-      Uri.parse("${baseURL}api/v1/cart/${jsonDecode(prefs.getString("user").toString())["id"]}"),
+      Uri.parse(
+          "${baseURL}api/v1/cart/${jsonDecode(prefs.getString("user").toString())["id"]}"),
       headers: {
         "Content-Type": "application/json",
         "Authorization":
@@ -247,7 +248,7 @@ class _CartPageState extends State<CartPage> {
                       left: 16,
                       right: 16,
                       top: 25,
-                      bottom: 16,
+                      bottom: 30,
                     ),
                     decoration: BoxDecoration(
                       color: secondaryColor,
@@ -291,7 +292,7 @@ class _CartPageState extends State<CartPage> {
                                 borderRadius: BorderRadius.circular(10),
                                 border:
                                     Border.all(color: Colors.white, width: 3)),
-                            width: 200,
+                            width: 300,
                             height: 45,
                             child: Center(
                                 child: Text(
@@ -299,6 +300,14 @@ class _CartPageState extends State<CartPage> {
                               style: TextStyle(fontWeight: FontWeight.bold),
                             )),
                           ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Text(
+                          "Read Terms and conditions ! ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
                         )
                       ],
                     ),

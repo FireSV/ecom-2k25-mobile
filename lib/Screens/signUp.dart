@@ -11,6 +11,7 @@ TextEditingController _password = TextEditingController();
 TextEditingController _firstName = TextEditingController();
 TextEditingController _lastName = TextEditingController();
 bool _loading = false;
+String? selectedRole;
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -27,6 +28,7 @@ class _SignUpState extends State<SignUp> {
       _firstName.text = "";
       _password.text = "";
       _email.text = "";
+      selectedRole = null;
       _loading = false;
     });
     super.initState();
@@ -34,12 +36,12 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    return  _loading
+    return _loading
         ? Loading()
-        :Scaffold(
-      backgroundColor: secondaryColor,
-      body: SafeArea(
-              child: SingleChildScrollView(
+        : Scaffold(
+            backgroundColor: secondaryColor,
+            body: SafeArea(
+                child: SingleChildScrollView(
               child: Column(
                 children: [
                   Row(
@@ -154,6 +156,55 @@ class _SignUpState extends State<SignUp> {
                         SizedBox(
                           height: 10,
                         ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            border: Border.all(color: Colors.white, width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: DropdownButtonFormField<String>(
+                              value: selectedRole,
+                              // The selected value
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                              items: ["Admin", "User"].map((String role) {
+                                return DropdownMenuItem<String>(
+                                  value: role,
+                                  child: Text(role),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedRole = newValue!;
+                                });
+                              },
+                              hint: Text("Select Role"),
+                            ),
+                          ),
+                        ),
+
+                        // Container(
+                        //   decoration: BoxDecoration(
+                        //       color: Colors.grey[200],
+                        //       border: Border.all(color: Colors.white, width: 2),
+                        //       borderRadius: BorderRadius.circular(10)),
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.only(left: 10, right: 10),
+                        //     child: TextField(
+                        //       controller: _lastName,
+                        //       decoration: InputDecoration(
+                        //         border: InputBorder.none,
+                        //         hintText: "Last Name",
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -167,7 +218,7 @@ class _SignUpState extends State<SignUp> {
                                     _email.text,
                                     _password.text,
                                     _firstName.text,
-                                    _lastName.text);
+                                    _lastName.text,selectedRole);
                                 print(response.body);
                                 if (response.statusCode == 200) {
                                   Navigator.push(
@@ -216,6 +267,6 @@ class _SignUpState extends State<SignUp> {
                 ],
               ),
             )),
-    );
+          );
   }
 }

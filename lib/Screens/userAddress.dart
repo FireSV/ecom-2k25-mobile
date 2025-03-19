@@ -126,7 +126,7 @@ class _UserAddressState extends State<UserAddress> {
                 res["state"].toString(),
                 res["postalCode"].toString(),
                 res["country"].toString(),
-                res["user"]["id"]));
+                res["userId"]));
           } catch (e) {}
         });
       }
@@ -139,6 +139,9 @@ class _UserAddressState extends State<UserAddress> {
 
   @override
   void initState() {
+    setState(() {
+      _id = 0;
+    });
     getAll();
     super.initState();
   }

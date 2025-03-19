@@ -37,6 +37,7 @@ class _TopCategoryState extends State<TopCategory> {
   void addTopCategory() async {
     setState(() {
       _loading = true;
+      _topCategoryWidget.clear();
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     http.Response response = await http.get(
@@ -50,7 +51,7 @@ class _TopCategoryState extends State<TopCategory> {
 
     print(
         "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}");
-
+    print(response.body);
     if (response.statusCode == 200) {
       for (var loop in jsonDecode(response.body)["content"]) {
         setState(() {
@@ -59,7 +60,7 @@ class _TopCategoryState extends State<TopCategory> {
                 loop["category"]["imageUrl"].toString(),
                 loop["category"]["name"].toString(),
                 TopServiceModel(loop["category"]["name"].toString(),
-                    loop["category"]["imageUrl"].toString(), 100.22, loop)));
+                    loop["category"]["imageUrl"].toString(), 100.22, loop["category"])));
           } catch (e) {
             print(e);
           }
@@ -123,28 +124,28 @@ class _TopCategoryState extends State<TopCategory> {
                 SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: grey.withAlpha(100),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: TextField(
-                        style: TextStyle(color: Colors.black),
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Search",
-                            hintStyle: TextStyle(color: grey),
-                            suffixIcon: Icon(
-                              Icons.search,
-                              color: grey,
-                            )),
-                      ),
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 20, right: 20),
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //         color: grey.withAlpha(100),
+                //         borderRadius: BorderRadius.circular(10)),
+                //     child: Padding(
+                //       padding: const EdgeInsets.only(left: 10, right: 10),
+                //       child: TextField(
+                //         style: TextStyle(color: Colors.black),
+                //         decoration: InputDecoration(
+                //             border: InputBorder.none,
+                //             hintText: "Search",
+                //             hintStyle: TextStyle(color: grey),
+                //             suffixIcon: Icon(
+                //               Icons.search,
+                //               color: grey,
+                //             )),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 if (_topCategoryWidget.length > 0)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,

@@ -280,7 +280,6 @@ class _ProductViewState extends State<ProductView> {
                                           "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
                                     },
                                   );
-                                  print(jsonDecode(response2.body).toString());
 
                                   if (response2.statusCode == 200) {
                                     if (jsonDecode(response2.body).length ==
@@ -301,6 +300,7 @@ class _ProductViewState extends State<ProductView> {
                                               "Bearer ${jsonDecode(prefs.getString("user").toString())["accessToken"]}",
                                         },
                                       );
+
                                       if (response.statusCode == 200) {
                                         const snackBar = SnackBar(
                                             content:
@@ -314,12 +314,11 @@ class _ProductViewState extends State<ProductView> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(snackBar);
                                       }
-                                    } else if (int.tryParse(
+                                    } else if (widget.product.createdUser ==
+
                                             jsonDecode(response2.body)[0]
-                                                    ["userId"]
-                                                .toString()) ==
-                                        int.tryParse(
-                                            widget.product.createdUser)) {
+                                                    ["product"]["createdUser"]
+                                                .toString()) {
                                       http.Response response = await http.post(
                                         body: jsonEncode({
                                           "productId": widget.product.id,

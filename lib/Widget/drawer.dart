@@ -1,10 +1,13 @@
 import 'package:fire_com/Colors/ColorsLocal.dart';
+import 'package:fire_com/Google/AuthService.dart';
 import 'package:fire_com/Screens/login.dart';
 import 'package:fire_com/Screens/userAddress.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Widget drawerWidget(BuildContext context) {
+  final AuthService _authService = AuthService();
+
   return Drawer(
       child: ListView(
     padding: EdgeInsets.zero,
@@ -59,6 +62,7 @@ Widget drawerWidget(BuildContext context) {
         onTap: () async {
           SharedPreferences _prefs = await SharedPreferences.getInstance();
           _prefs.clear();
+          await _authService.signOut();
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => Login()),

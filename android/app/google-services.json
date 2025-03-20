@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "880483528519",
+    "project_id": "ecom2k25-7207e",
+    "storage_bucket": "ecom2k25-7207e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:880483528519:android:b4f874bf4bdcd61ec26662",
+        "android_client_info": {
+          "package_name": "com.fire.fire_com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "880483528519-552schhsh21ai4aiptg1beg2ogd1qf61.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fire.fire_com",
+            "certificate_hash": "e2fbc1a5325540c824a99fe87dc31175f2a49dba"
+          }
+        },
+        {
+          "client_id": "880483528519-ltmerr1k5srip6nca72vv7nvoaubeuh6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDP_FHM7vLPXmNF8wNnmYgRcje86oV8f0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "880483528519-ltmerr1k5srip6nca72vv7nvoaubeuh6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

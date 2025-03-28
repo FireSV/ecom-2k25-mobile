@@ -233,7 +233,7 @@ class _CartPageState extends State<CartPage> {
                                       index, 1, _cartList[index]),
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  icon: Icon(Icons.delete, color: Colors.red,),
                                   onPressed: () => removeItem(index),
                                 ),
                               ],

@@ -69,7 +69,7 @@ class OrderLine {
   factory OrderLine.fromJson(Map<String, dynamic> json) {
     return OrderLine(
       id: json['id'] ?? 0,
-      itemName: json['name'] ?? 'Unknown Item',
+      itemName: json['name'].toString() ?? 'Unknown Item',
       quantity: (json['qty'] as num?)?.toInt() ?? 0,
       price: (json['price'] as num?)?.toDouble() ?? 0.0,
     );
